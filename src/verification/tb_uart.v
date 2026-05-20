@@ -1,5 +1,4 @@
 `timescale 1ns / 1ps
-`include "inc.h"
 `default_nettype none
  
 module main_tb_uart;
@@ -32,14 +31,17 @@ module main_tb_uart;
     end
  
     // Dynamically derive the correct bit duration based on the BAUD macro in inc.h
-    localparam bit_duration = 1000000000 / `BAUD;
+    localparam bit_duration = 1000000000 / 9600;
  
-    uart utx (    
+    U_TOP #(
+        .SYS_CLK_FREQ(50000000),
+        .BAUD_RATE(9600)
+    ) utx (    
         .sys_clk(sys_clk1),
         .sys_rst_l(sys_rst_l),
         .xmitH(xmit_H),
         .xmit_dataH(xmit_dataH),
-        .uart_xmit_dataH(uart_XMIT_dataH),
+        .uart_XMIT_dataH(uart_XMIT_dataH),
         .xmit_active(xmit_active),
         .xmit_doneH(xmit_doneH),
         .rec_readyH(rec_ready1),
@@ -48,7 +50,10 @@ module main_tb_uart;
         .uart_REC_dataH(uart_XMIT_dataH) // Loopback
     );
  
-    uart urx (
+    U_TOP #(
+        .SYS_CLK_FREQ(50000000),
+        .BAUD_RATE(9600)
+    ) urx (
         .sys_clk(sys_clk2),
         .sys_rst_l(sys_rst_l),
         .uart_REC_dataH(uart_XMIT_dataH),
@@ -59,7 +64,10 @@ module main_tb_uart;
         .xmit_dataH(xmit_dataH)
     );
  
-    uart urx_slow (
+    U_TOP #(
+        .SYS_CLK_FREQ(50000000),
+        .BAUD_RATE(9600)
+    ) urx_slow (
         .sys_clk(sys_clk3),
         .sys_rst_l(sys_rst_l),
         .uart_REC_dataH(uart_XMIT_dataH),
@@ -145,21 +153,21 @@ module main_tb_uart;
  
     task invalid_states;
         begin
-           // Reference the correct sub-instances (u1, u2) and correct variable names (ps)
-           force utx.u1.ps = 3'b111;
-           force utx.u2.ps = 3'b111;
-           force urx.u1.ps = 3'b111;
-           force urx.u2.ps = 3'b111;
-           force urx_slow.u1.ps = 3'b111;
-           force urx_slow.u2.ps = 3'b111;
+           // Reference the correct sub-instances (tx, rx) and correct variable names (state)
+           force utx.tx.state = 3'b111;
+           force utx.rx.state = 3'b111;
+           force urx.tx.state = 3'b111;
+           force urx.rx.state = 3'b111;
+           force urx_slow.tx.state = 3'b111;
+           force urx_slow.rx.state = 3'b111;
            #(2 * bit_duration);
            
-           release utx.u1.ps;
-           release utx.u2.ps;
-           release urx.u1.ps;
-           release urx.u2.ps;
-           release urx_slow.u1.ps;
-           release urx_slow.u2.ps;
+           release utx.tx.state;
+           release utx.rx.state;
+           release urx.tx.state;
+           release urx.rx.state;
+           release urx_slow.tx.state;
+           release urx_slow.rx.state;
            
            #(2 * bit_duration);
         end
