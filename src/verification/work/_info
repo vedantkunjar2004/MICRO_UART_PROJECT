@@ -1,0 +1,133 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/fetools/work_area/frontend/Batch_11/vedant/MICRO_UART_PROJECT/src/verification
+T_opt
+!s110 1779296360
+VFE1d_6ja^_f^XGY;_`7=P1
+04 12 4 work main_tb_uart fast 0
+=1-6805caf5892e-6a0de868-1ea9b-10368
+o-quiet -auto_acc_if_foreign -work work
+Z1 tCvgOpt 0
+n@_opt
+OE;O;10.6c;65
+vmain_tb_uart
+Z2 !s110 1779296351
+!i10b 1
+!s100 TnZL:OkB?A:Sho_O`bjdZ0
+INH3gZ5j:@0o0DbQc8J@YZ1
+Z3 VDg1SIo80bB@j0V0VzS_@n1
+R0
+w1779296096
+8tb_uart.v
+Ftb_uart.v
+L0 4
+Z4 OE;L;10.6c;65
+r1
+!s85 0
+31
+Z5 !s108 1779296351.000000
+Z6 !s107 tb_uart.v|uart.v|u_rec_verify.v|u_xmit_verify.v|baud_verify.v|
+Z7 !s90 +acc|+cover|-l|log_file.log|baud_verify.v|u_xmit_verify.v|u_rec_verify.v|uart.v|tb_uart.v|
+!i113 0
+Z8 !s102 +cover
+Z9 o+acc +cover -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R1
+vU_BAUD
+R2
+!i10b 1
+!s100 VViN@9Dbo>LZ8zgc:c@5l0
+IG593fmXKCk`0`=WfGMN3d0
+R3
+R0
+Z10 w1779269902
+8baud_verify.v
+Fbaud_verify.v
+L0 3
+R4
+r1
+!s85 0
+31
+R5
+R6
+R7
+!i113 0
+R8
+R9
+R1
+n@u_@b@a@u@d
+vU_REC
+R2
+!i10b 1
+!s100 ZM27[JS8PT;]iRLjkGl@`0
+IOF5n7@CDX_77XMldlnN?61
+R3
+R0
+R10
+8u_rec_verify.v
+Fu_rec_verify.v
+L0 4
+R4
+r1
+!s85 0
+31
+R5
+R6
+R7
+!i113 0
+R8
+R9
+R1
+n@u_@r@e@c
+vU_TOP
+R2
+!i10b 1
+!s100 5OJR;m@BM2zJ4@K=<WRDV0
+IoKgKiIgO=8hd6d>J=mJFz2
+R3
+R0
+w1779296270
+8uart.v
+Fuart.v
+L0 3
+R4
+r1
+!s85 0
+31
+R5
+R6
+R7
+!i113 0
+R8
+R9
+R1
+n@u_@t@o@p
+vU_TRANS
+R2
+!i10b 1
+!s100 2GgN9hlUAjc4R66BImHZo1
+I6F42FBLQIH`TokjSod_V@0
+R3
+R0
+w1779296315
+8u_xmit_verify.v
+Fu_xmit_verify.v
+L0 4
+R4
+r1
+!s85 0
+31
+R5
+R6
+R7
+!i113 0
+R8
+R9
+R1
+n@u_@t@r@a@n@s
