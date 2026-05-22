@@ -11,7 +11,6 @@ localparam S_IDLE=0;
 localparam S_START=1;
 localparam S_DATA=2;
 localparam S_STOP=3;
-localparam S_DONE=4;
 
 reg [3:0]count;
 reg [`WORD_LEN-1:0]temp_data = {`WORD_LEN{1'b0}};
@@ -22,7 +21,7 @@ reg sync1,sync2;
 always@(posedge uart_clk or negedge sys_rst_l) begin
     if(!sys_rst_l) begin
         sync1 <= 1'b1;
-        sync2 <= 1'b1;
+        sync2 <= 1'b1;              
     end
     else begin
         sync1 <= uart_REC_dataH;
@@ -41,13 +40,12 @@ always@(posedge uart_clk or negedge sys_rst_l) begin
         rec_dataH<=0;      
     end
     else begin
-        ps<=ns;
-        
+        ps<=ns;              
         
         //4-BIT COUNTER LOGIC
         if(ps==S_IDLE) count <= 4'd0;
-        else if(ps==S_START && count==4'd7) count <= 4'd0;
-        else if(ps==S_DATA && count==4'd15 && bit_count==`WORD_LEN-1) count <= 4'd0;
+        else if(ps==S_START && count==4'd6) count <= 4'd0;
+        else if(ps==S_DATA && count==4'd14 && bit_count==`WORD_LEN-1) count <= 4'd0;
         else if(ps==S_START || ps==S_DATA || ps==S_STOP) count <= count+1;
         else count <= 4'd0;
             
@@ -66,7 +64,7 @@ always@(posedge uart_clk or negedge sys_rst_l) begin
             temp_data <= temp_data;
        end
        
-       if(ps==S_DONE && sync2) begin
+       if(ps==S_STOP && sync2) begin
             rec_dataH <= temp_data;
        end
        else rec_dataH <= rec_dataH;
@@ -88,8 +86,8 @@ always@(*) begin
             rec_busy=1'b1;
             rec_readyH=1'b0;
             
-            if(count==7) begin
-                if(sync2==1'b0) ns=S_DATA;
+            if(count==6) begin
+                if(!sync2) ns=S_DATA;
                 else ns=S_IDLE;
             end
             else ns=S_START;
@@ -99,7 +97,7 @@ always@(*) begin
             rec_busy=1'b1;
             rec_readyH=1'b0; 
             
-            if(count==4'd15) begin
+            if(count==4'd14) begin
                 if(bit_count==`WORD_LEN-1) begin
                     ns=S_STOP;
                 end
@@ -113,17 +111,15 @@ always@(*) begin
             rec_busy = 1'b1;
             rec_readyH = 1'b0;
             
-            if(count==4'd15) begin
-                if(sync2) ns = S_DONE;
+            if(count==4'd14) begin
+                if(sync2) begin
+                    ns = S_IDLE;
+                    rec_readyH = 1'b1;
+                    rec_busy = 1'b0;
+                end    
                 else ns = S_IDLE;
             end
             else ns=S_STOP;           
-        end
-        
-        S_DONE: begin
-            ns = S_IDLE;  
-            rec_readyH = 1'b1;
-            rec_busy = 1'b0;          
         end
         
         default: begin
