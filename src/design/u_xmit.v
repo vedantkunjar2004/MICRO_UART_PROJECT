@@ -6,12 +6,11 @@ module u_xmit(
     output reg xmit_active, xmit_doneH, uart_xmit_dataH
     );
         
-reg[2:0]ps,ns;
+reg[1:0]ps,ns;
 localparam S_IDLE=0;
 localparam S_START=1;
 localparam S_DATA=2;
 localparam S_STOP=3;
-localparam S_DONE=4;
 
 reg [3:0]count;
 reg [$clog2(`WORD_LEN)-1:0]bit_count;
@@ -97,16 +96,13 @@ reg [`WORD_LEN-1:0]data;
                 xmit_active=1'b1;
                 uart_xmit_dataH=1'b1;       //STOP BIT
                 if(count==4'd15) begin
-                    ns=S_DONE;                   
+                    xmit_doneH=1'b1;
+                    xmit_active=1'b0;
+                    ns=S_IDLE;                   
                 end
                 else begin
                     ns=S_STOP;                
                 end
-            end
-            
-            S_DONE:  begin                  
-                xmit_doneH=1'b1;
-                ns=S_IDLE;
             end
             
             default: ns=S_IDLE;
